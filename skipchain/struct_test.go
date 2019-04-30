@@ -6,8 +6,11 @@ import (
 	"os"
 	"testing"
 
+	"go.dedis.ch/cothority/v3/byzcoinx"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.dedis.ch/kyber/v3"
 	"go.dedis.ch/kyber/v3/suites"
 	"go.dedis.ch/onet/v3"
 	"go.dedis.ch/onet/v3/log"
@@ -92,6 +95,29 @@ func TestSkipBlock_VerifySignatures(t *testing.T) {
 	require.Equal(t, "Missing roster in the block", err.Error())
 }
 
+func TestSkipBlock_WrongSignatures(t *testing.T) {
+	fl := ForwardLink{
+		From:      SkipBlockID{},
+		To:        SkipBlockID{},
+		Signature: byzcoinx.FinalSignature{},
+	}
+	err := fl.VerifyWithScheme(suite, []kyber.Point{}, 0)
+	require.Error(t, err)
+	require.Equal(t, "wrong hash of forward link", err.Error())
+
+	fl.Signature.Msg = fl.Hash()
+
+	err = fl.VerifyWithScheme(suite, []kyber.Point{}, 123456789)
+	require.Error(t, err)
+	require.Equal(t, "unknown signature scheme", err.Error())
+	err = fl.VerifyWithScheme(suite, []kyber.Point{}, BlsSignatureSchemeIndex)
+	require.Error(t, err)
+	require.NotEqual(t, "unknown signature scheme", err.Error())
+	err = fl.VerifyWithScheme(suite, []kyber.Point{}, BdnSignatureSchemeIndex)
+	require.Error(t, err)
+	require.NotEqual(t, "unknown signature scheme", err.Error())
+}
+
 func TestSkipBlock_Hash1(t *testing.T) {
 	// Needed for the roster.
 	s := suites.MustFind("ed25519")
@@ -126,6 +152,11 @@ func TestSkipBlock_Hash1(t *testing.T) {
 	// Clone, then change field Data: not equal
 	sbd2 = sbd1.Copy()
 	sbd2.Data[0]++
+	h2 = sbd2.updateHash()
+	assert.NotEqual(t, h1, h2)
+
+	sbd2 = sbd1.Copy()
+	sbd2.SignatureScheme++
 	h2 = sbd2.updateHash()
 	assert.NotEqual(t, h1, h2)
 }
