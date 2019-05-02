@@ -35,6 +35,8 @@ message Write {
   optional bytes extradata = 7;
   // LTSID points to the identity of the lts group
   required bytes ltsid = 8;
+  // Cost reflects how many coins you'll have to pay for a read-request
+  optional byzcoin.Coin cost = 9;
 }
 
 // Read is the data stored in a read instance. It has a pointer to the write
@@ -48,14 +50,16 @@ message Read {
 // These are the messages used in the API-calls
 // ***
 
-// Authorise is used to add the given ByzCoinID into the list of
-// authorised IDs.
-message Authorise {
+// Authorize is used to add the given ByzCoinID into the list of
+// authorised IDs. To be accepted, the ByzCoinID must be signed
+// using the private key of the conode.
+message Authorize {
   required bytes byzcoinid = 1;
+  required bytes signature = 2;
 }
 
-// AuthoriseReply is returned upon successful authorisation.
-message AuthoriseReply {
+// AuthorizeReply is returned upon successful authorisation.
+message AuthorizeReply {
 }
 
 // CreateLTS is used to start a DKG and store the private keys in each node.
