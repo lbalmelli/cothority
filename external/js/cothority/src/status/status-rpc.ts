@@ -37,6 +37,6 @@ export default class StatusRPC {
 
         this.conn[index].setTimeout(this.timeout);
 
-        return this.conn[index].send(new StatusRequest(), StatusResponse);
+        return (await this.conn[index].send(new StatusRequest(), StatusResponse)) as StatusResponse;
     }
 }

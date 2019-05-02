@@ -6,6 +6,7 @@ import { IIdentity } from "./identity-wrapper";
  * A rule will give who is allowed to use a given action
  */
 export class Rule extends Message<Rule> {
+
     /**
      * @see README#Message classes
      */
@@ -47,6 +48,7 @@ export class Rule extends Message<Rule> {
  * the rules
  */
 export default class Rules extends Message<Rules> {
+
     static OR = "|";
     static AND = "&";
 
@@ -56,7 +58,6 @@ export default class Rules extends Message<Rules> {
     static register() {
         registerMessage("Rules", Rules, Rule);
     }
-
     readonly list: Rule[];
 
     constructor(properties?: Properties<Rules>) {
@@ -83,8 +84,34 @@ export default class Rules extends Message<Rules> {
                 expr: Buffer.concat([rule.expr, Buffer.from(` ${op} ${identity.toString()}`)]),
             });
         } else {
-            this.list.push(new Rule({ action, expr: Buffer.from(identity.toString()) }));
+            this.list.push(new Rule({action, expr: Buffer.from(identity.toString())}));
         }
+    }
+
+    /**
+     * Sets a rule to correspond to the given identity. If the rule already exists, it will be
+     * replaced.
+     * @param action    the name of the rule
+     * @param identity  the identity to append
+     */
+    setRule(action: string, identity: IIdentity): void {
+        const idx = this.list.findIndex((r) => r.action === action);
+
+        const nr = new Rule({action, expr: Buffer.from(identity.toString())});
+        if (idx >= 0) {
+            this.list[idx] = nr;
+        } else {
+            this.list.push(nr);
+        }
+    }
+
+    /**
+     * getRule returns the rule with the given action
+     *
+     * @param action to search in the rules for.
+     */
+    getRule(action: string): Rule {
+        return this.list.find((r) => r.action === action);
     }
 
     /**
@@ -92,7 +119,7 @@ export default class Rules extends Message<Rules> {
      * @returns the clone
      */
     clone(): Rules {
-        return new Rules({ list: this.list.map((r) => r.clone()) });
+        return new Rules({list: this.list.map((r) => r.clone())});
     }
 
     /**

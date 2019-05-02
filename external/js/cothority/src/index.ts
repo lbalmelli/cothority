@@ -1,4 +1,5 @@
 import * as byzcoin from "./byzcoin";
+import * as calypso from "./calypso";
 import * as contracts from "./byzcoin/contracts";
 import * as darc from "./darc";
 import * as network from "./network";
@@ -7,6 +8,7 @@ import * as status from "./status";
 
 export {
     byzcoin,
+    calypso,
     contracts,
     darc,
     network,

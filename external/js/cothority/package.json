@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@dedis/cothority",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "description": "A typescript implementation of the cothority",
   "main": "index.js",
   "browser": "bundle.min.js",
@@ -12,7 +12,8 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "npm run protobuf && tsc",
-    "linter": "node_modules/.bin/tslint src/{,**/}*.ts spec/{,**/}*.ts",
+    "linter": "node_modules/.bin/tslint 'src/{,**/}*.ts' 'spec/{,**/}*.ts'",
+    "linter:fix": "node_modules/.bin/tslint --fix 'src/{,**/}*.ts' 'spec/{,**/}*.ts'",
     "test": "npm run linter && npm run cover",
     "test:nocover": "ts-node node_modules/jasmine/bin/jasmine.js",
     "cover": "node_modules/.bin/nyc --reporter=lcov --reporter=text node_modules/jasmine/bin/jasmine.js",
@@ -30,7 +31,7 @@
   "license": "LGPL-3.0-or-later",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "@dedis/kyber": "^3.0.1",
+    "@dedis/kyber": "^3.0.2",
     "@stablelib/blake2xs": "^0.10.4",
     "@types/crypto-js": "^3.1.43",
     "@types/node": "^10.12.18",
@@ -39,6 +40,7 @@
     "co": "^4.6.0",
     "file": "^0.2.2",
     "isomorphic-ws": "^4.0.1",
+    "keccak": "^2.0.0",
     "lodash": "^4.17.11",
     "long": "^4.0.0",
     "moment": "^2.24.0",

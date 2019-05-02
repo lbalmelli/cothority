@@ -1,3 +1,4 @@
+import { Properties } from "protobufjs";
 import ByzCoinRPC from "./byzcoin-rpc";
 import Proof from "./proof";
 
@@ -17,7 +18,7 @@ export default class Instance {
             throw new Error(`key not in proof: ${key.toString("hex")}`);
         }
 
-        return new Instance(key, p.contractID, p.darcID, p.value);
+        return Instance.fromFields(key, p.contractID, p.darcID, p.value);
     }
 
     /**
@@ -32,15 +33,47 @@ export default class Instance {
         return Instance.fromProof(id, p);
     }
 
-    readonly id: InstanceID;
-    readonly contractID: string;
-    readonly darcID: InstanceID;
-    readonly data: Buffer;
+    /**
+     * Creates a new instance from separated fields.
+     * @param id
+     * @param contractID
+     * @param darcID
+     * @param data
+     */
+    static fromFields(id: InstanceID, contractID: string, darcID: InstanceID, data: Buffer): Instance {
+        return new Instance({id, contractID, darcID, data});
+    }
 
-    protected constructor(id: Buffer, contractID: string, darcID: Buffer, data: Buffer) {
-        this.id = id;
-        this.contractID = contractID;
-        this.darcID = darcID;
-        this.data = data;
+    /**
+     * Returns an instance from a previously toBytes() call.
+     * @param buf
+     */
+    static fromBytes(buf: Buffer): Instance {
+        const obj = JSON.parse(buf.toString());
+        return new Instance({
+            contractID: obj.contractID,
+            darcID: Buffer.from(obj.darcID),
+            data: Buffer.from(obj.data),
+            id: Buffer.from(obj.id),
+        });
+    }
+
+    id: InstanceID;
+    contractID: string;
+    darcID: InstanceID;
+    data: Buffer;
+
+    protected constructor(init: Properties<Instance> | Instance) {
+        this.id = init.id;
+        this.contractID = init.contractID;
+        this.darcID = init.darcID;
+        this.data = init.data;
+    }
+
+    /**
+     * Returns a byte representation of the Instance.
+     */
+    toBytes(): Buffer {
+        return Buffer.from(JSON.stringify(this));
     }
 }
