@@ -12,3 +12,5 @@ cosi/simulation/test_data/
 *~
 .tags*
 **/build/
+*.db
+*.cfg
