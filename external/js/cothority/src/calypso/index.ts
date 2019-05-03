@@ -1,6 +1,6 @@
 import { CalypsoReadInstance, CalypsoWriteInstance, DecodeKey,
 OnChainSecretInstance, Read, Write } from "./calypso-instance";
-import { Authorise, AuthoriseReply, CreateLTS, CreateLTSReply,
+import { Authorize, AuthorizeReply, CreateLTS, CreateLTSReply,
 DecryptKey, DecryptKeyReply, LongTermSecret, LtsInstanceInfo, OnChainSecretRPC } from "./calypso-rpc";
 
 export {
@@ -12,8 +12,8 @@ export {
     DecodeKey,
     OnChainSecretRPC,
     LongTermSecret,
-    Authorise,
-    AuthoriseReply,
+    Authorize,
+    AuthorizeReply,
     CreateLTS,
     CreateLTSReply,
     DecryptKey,

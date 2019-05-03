@@ -1,4 +1,4 @@
-import { Point } from "@dedis/kyber";
+import { Point } from "@c4dt/kyber";
 import { createHash, randomBytes } from "crypto";
 import { Message, Properties } from "protobufjs/light";
 import Signer from "../../darc/signer";
@@ -11,8 +11,8 @@ export default class CredentialsInstance extends Instance {
     static readonly contractID = "credential";
     static readonly commandUpdate = "update";
     static readonly argumentCredential = "credential";
-    static readonly argumentCredID = "credID";
-    static readonly argumentDarcID = "darcID";
+    static readonly argumentCredID = "credentialID";
+    static readonly argumentDarcID = "darcIDBuf";
 
     /**
      * Generate the credential instance ID for a given darc ID

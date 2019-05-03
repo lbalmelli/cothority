@@ -1,4 +1,4 @@
-import { curve, Point } from "@dedis/kyber";
+import { curve, Point } from "@c4dt/kyber";
 import Long from "long";
 import ByzCoinRPC from "../../src/byzcoin/byzcoin-rpc";
 import CoinInstance from "../../src/byzcoin/contracts/coin-instance";

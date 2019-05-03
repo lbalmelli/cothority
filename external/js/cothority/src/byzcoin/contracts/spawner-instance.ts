@@ -82,7 +82,7 @@ export default class SpawnerInstance extends Instance {
      * @param iid the instance-ID of the spawn-instance
      */
     static async fromByzcoin(bc: ByzCoinRPC, iid: InstanceID): Promise<SpawnerInstance> {
-        const proof = await bc.getProof(iid);
+        const proof = await bc.getProof(iid, 2);
         if (!proof.exists(iid)) {
             throw new Error("fail to get a matching proof");
         }
@@ -201,8 +201,6 @@ export default class SpawnerInstance extends Instance {
         });
         await ctx.updateCountersAndSign(this.rpc, [signers, []]);
         await this.rpc.sendTransactionAndWait(ctx);
-
-        Log.print("coin-id is:", coinID, CoinInstance.coinIID(coinID));
 
         return CoinInstance.fromByzcoin(this.rpc, CoinInstance.coinIID(coinID));
     }

@@ -2,6 +2,7 @@ import { createHash } from "crypto";
 import * as _ from "lodash";
 import Long from "long";
 import { Message, Properties } from "protobufjs/light";
+import { Log } from "../log";
 import { registerMessage } from "../protobuf";
 import { SkipchainRPC } from "../skipchain";
 import { ForwardLink, SkipBlock } from "../skipchain/skipblock";
@@ -120,7 +121,7 @@ export default class Proof extends Message<Proof> {
             return new Error("invalid root");
         }
 
-        let publics = this.latest.roster.getServicePublics(SkipchainRPC.serviceName);
+        let publics = this.links[0].newRoster.getServicePublics(SkipchainRPC.serviceName);
         let prev = this.links[0].to;
 
         if (!prev.equals(genesisID)) {

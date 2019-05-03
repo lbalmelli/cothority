@@ -1,4 +1,4 @@
-import { Point, PointFactory, Scalar } from "@dedis/kyber";
+import { Point, PointFactory, Scalar } from "@c4dt/kyber";
 import { Message, Properties } from "protobufjs";
 import { Argument, ClientTransaction, InstanceID, Instruction, Proof } from "../byzcoin";
 import ByzCoinRPC from "../byzcoin/byzcoin-rpc";
@@ -44,32 +44,32 @@ export class OnChainSecretRPC {
             .send(new CreateLTS({proof: p}), CreateLTSReply);
     }
 
-    // authorise adds a ByzCoinID to the list of authorized IDs for each
-    // server in the roster. The authorise endpoint refuses requests
+    // authorize adds a ByzCoinID to the list of authorized IDs for each
+    // server in the roster. The authorize endpoint refuses requests
     // that do not come from localhost for security reasons.
     //
     // It should be called by the administrator at the beginning, before any other
-    // API calls are made. A ByzCoinID that is not authorised will not be allowed to
+    // API calls are made. A ByzCoinID that is not authorized will not be allowed to
     // call the other APIs.
-    async authorise(who: ServerIdentity, bcid: InstanceID): Promise<AuthoriseReply> {
+    async authorize(who: ServerIdentity, bcid: InstanceID): Promise<AuthorizeReply> {
         const sock = new WebSocketConnection(who.getWebSocketAddress(), OnChainSecretRPC.serviceID);
-        return sock.send(new Authorise({byzcoinid: bcid}), AuthoriseReply);
+        return sock.send(new Authorize({byzcoinid: bcid}), AuthorizeReply);
     }
 
     /**
-     * authoriseRoster is a convenience method that authorises all nodes in the bc-roster
+     * authorizeRoster is a convenience method that authorizes all nodes in the bc-roster
      * to create new LTS. For this to work, the nodes must have been started with
      * COTHORITY_ALLOW_INSECURE_ADMIN=true
      *
      * @param roster if given, this roster is used instead of the bc-roster
      */
-    async authoriseRoster(roster?: Roster) {
+    async authorizeRoster(roster?: Roster) {
         if (!roster) {
             roster = this.bc.getConfig().roster;
         }
         for (const node of roster.list) {
             Log.lvl2("Authorizing lts-creation by byzcoin on node", node.address);
-            await this.authorise(node, this.bc.genesisID);
+            await this.authorize(node, this.bc.genesisID);
         }
     }
 
@@ -111,33 +111,33 @@ export class LongTermSecret extends OnChainSecretRPC {
 }
 
 /**
- * Authorise is used to add the given ByzCoinID into the list of authorised IDs.
+ * Authorize is used to add the given ByzCoinID into the list of authorized IDs.
  */
-export class Authorise extends Message<Authorise> {
+export class Authorize extends Message<Authorize> {
 
     /**
      * @see README#Message classes
      */
     static register() {
-        registerMessage("Authorise", Authorise);
+        registerMessage("Authorize", Authorize);
     }
 
     readonly byzcoinid: InstanceID;
 
-    constructor(props?: Properties<Authorise>) {
+    constructor(props?: Properties<Authorize>) {
         super(props);
     }
 }
 
 /**
- * AuthoriseReply is returned upon successful authorisation.
+ * AuthorizeReply is returned upon successful authorisation.
  */
-export class AuthoriseReply extends Message<AuthoriseReply> {
+export class AuthorizeReply extends Message<AuthorizeReply> {
     /**
      * @see README#Message classes
      */
     static register() {
-        registerMessage("AuthoriseReply", AuthoriseReply);
+        registerMessage("AuthorizeReply", AuthorizeReply);
     }
 }
 
@@ -250,8 +250,8 @@ export class LtsInstanceInfo extends Message<LtsInstanceInfo> {
     }
 }
 
-Authorise.register();
-AuthoriseReply.register();
+Authorize.register();
+AuthorizeReply.register();
 CreateLTS.register();
 CreateLTSReply.register();
 DecryptKey.register();

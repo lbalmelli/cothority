@@ -28,7 +28,7 @@ export default class Instance {
      * @returns the instance if it exists
      */
     static async fromByzCoin(rpc: ByzCoinRPC, id: InstanceID): Promise<Instance> {
-        const p = await rpc.getProof(id);
+        const p = await rpc.getProof(id, 1);
 
         return Instance.fromProof(id, p);
     }

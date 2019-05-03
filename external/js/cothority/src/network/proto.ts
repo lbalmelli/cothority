@@ -1,4 +1,4 @@
-import { Point, PointFactory } from "@dedis/kyber";
+import { Point, PointFactory } from "@c4dt/kyber";
 import { createHash } from "crypto";
 import { Message, Properties } from "protobufjs/light";
 import UUID from "pure-uuid";
@@ -123,6 +123,13 @@ export class Roster extends Message<Roster> {
 
             return PointFactory.fromProto(t.public);
         });
+    }
+
+    /**
+     * Returns the list of public keys of the conodes in the roster.
+     */
+    getPublics(): Point[] {
+        return this.list.map((si) => si.getPublic());
     }
 
     /**

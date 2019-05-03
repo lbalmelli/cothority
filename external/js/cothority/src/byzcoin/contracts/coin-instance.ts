@@ -13,6 +13,8 @@ export default class CoinInstance extends Instance {
     static readonly commandFetch = "fetch";
     static readonly commandTransfer = "transfer";
     static readonly commandStore = "store";
+    static readonly argumentCoinID = "coinID";
+    static readonly argumentDarcID = "darcID";
     static readonly argumentType = "type";
     static readonly argumentCoins = "coins";
     static readonly argumentDestination = "destination";
