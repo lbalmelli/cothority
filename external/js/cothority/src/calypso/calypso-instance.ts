@@ -1,4 +1,4 @@
-import { curve, Point, Scalar } from "@c4dt/kyber";
+import { curve, Point, Scalar } from "@dedis/kyber";
 import { createHash } from "crypto";
 import Keccak from "keccak";
 import { Message, Properties } from "protobufjs/light";

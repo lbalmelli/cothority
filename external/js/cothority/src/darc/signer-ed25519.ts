@@ -1,5 +1,5 @@
-import { curve, Point, Scalar, sign } from "@c4dt/kyber";
-import Ed25519Scalar from "@c4dt/kyber/curve/edwards25519/scalar";
+import { curve, Point, Scalar, sign } from "@dedis/kyber";
+import Ed25519Scalar from "@dedis/kyber/curve/edwards25519/scalar";
 import { randomBytes } from "crypto";
 import { Log } from "../log";
 import IdentityEd25519 from "./identity-ed25519";

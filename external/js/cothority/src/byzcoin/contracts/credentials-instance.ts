@@ -1,4 +1,4 @@
-import { Point } from "@c4dt/kyber";
+import { Point } from "@dedis/kyber";
 import { createHash, randomBytes } from "crypto";
 import { Message, Properties } from "protobufjs/light";
 import Signer from "../../darc/signer";

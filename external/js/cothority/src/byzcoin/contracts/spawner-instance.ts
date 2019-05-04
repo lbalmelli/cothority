@@ -37,6 +37,12 @@ export default class SpawnerInstance extends Instance {
     }
 
     static readonly contractID = "spawner";
+    static readonly argumentCredential = "credential";
+    static readonly argumentCredID = "credID";
+    static readonly argumentDarc = "darc";
+    static readonly argumentDarcID = "darcID";
+    static readonly argumentCoinID = "coinID";
+    static readonly argumentCoinName = "coinName";
 
     /**
      * Spawn a spawner instance. It takes either an ICreateSpawner as single argument, or all the arguments
@@ -144,7 +150,7 @@ export default class SpawnerInstance extends Instance {
                 Instruction.createSpawn(
                     this.id,
                     DarcInstance.contractID,
-                    [new Argument({name: DarcInstance.argumentDarc, value: darc.toBytes()})],
+                    [new Argument({name: SpawnerInstance.argumentDarc, value: darc.toBytes()})],
                 ));
         });
         await ctx.updateCountersAndSign(this.rpc, [signers]);
@@ -192,9 +198,9 @@ export default class SpawnerInstance extends Instance {
                     this.id,
                     CoinInstance.contractID,
                     [
-                        new Argument({name: "coinName", value: SPAWNER_COIN}),
-                        new Argument({name: "coinID", value: coinID}),
-                        new Argument({name: "darcID", value: darcID}),
+                        new Argument({name: SpawnerInstance.argumentCoinName, value: SPAWNER_COIN}),
+                        new Argument({name: SpawnerInstance.argumentCoinID, value: coinID}),
+                        new Argument({name: SpawnerInstance.argumentDarcID, value: darcID}),
                     ],
                 ),
             ],
@@ -224,12 +230,12 @@ export default class SpawnerInstance extends Instance {
     ): Promise<CredentialsInstance> {
         const valueBuf = this.struct.costCredential.value.toBytesLE();
         const credArgs = [
-            new Argument({name: CredentialsInstance.argumentDarcID, value: darcID}),
-            new Argument({name: CredentialsInstance.argumentCredential, value: cred.toBytes()}),
+            new Argument({name: SpawnerInstance.argumentDarcID, value: darcID}),
+            new Argument({name: SpawnerInstance.argumentCredential, value: cred.toBytes()}),
         ];
         let finalCredID: Buffer;
         if (credID) {
-            credArgs.push(new Argument({name: CredentialsInstance.argumentCredID, value: credID}));
+            credArgs.push(new Argument({name: SpawnerInstance.argumentCredID, value: credID}));
             finalCredID = CredentialInstance.credentialIID(credID);
         } else {
             finalCredID = CredentialsInstance.credentialIID(darcID);
@@ -289,7 +295,7 @@ export default class SpawnerInstance extends Instance {
                 Instruction.createSpawn(
                     this.id,
                     DarcInstance.contractID,
-                    [new Argument({name: DarcInstance.argumentDarc, value: orgDarc.toBytes()})],
+                    [new Argument({name: SpawnerInstance.argumentDarc, value: orgDarc.toBytes()})],
                 ),
                 Instruction.createSpawn(
                     this.id,

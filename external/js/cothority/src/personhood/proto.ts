@@ -1,4 +1,4 @@
-import { Point, PointFactory } from "@c4dt/kyber";
+import { Point, PointFactory } from "@dedis/kyber";
 import Long from "long";
 import Moment from "moment";
 import { Message, Properties } from "protobufjs/light";

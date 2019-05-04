@@ -1,4 +1,4 @@
-import { Point, Scalar } from "@c4dt/kyber";
+import { Point, Scalar } from "@dedis/kyber";
 import * as crypto from "crypto";
 import { randomBytes } from "crypto";
 import Long from "long";
