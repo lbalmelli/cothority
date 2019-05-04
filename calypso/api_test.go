@@ -33,7 +33,7 @@ func TestClient_CreateLTS(t *testing.T) {
 	require.Nil(t, err)
 	calypsoClient := NewClient(c)
 	for _, who := range roster.List {
-		err := calypsoClient.Authorise(who, c.ID)
+		err := calypsoClient.Authorize(who, c.ID)
 		require.NoError(t, err)
 	}
 
@@ -78,7 +78,7 @@ func TestClient_Calypso(t *testing.T) {
 
 	//Create the LTS
 	for _, who := range roster.List {
-		err := calypsoClient.Authorise(who, c.ID)
+		err := calypsoClient.Authorize(who, c.ID)
 		require.NoError(t, err)
 	}
 	ltsReply, err := calypsoClient.CreateLTS(roster, gDarc.GetBaseID(), []darc.Signer{admin}, []uint64{adminCt})
